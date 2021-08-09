@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!--扫描注解  -->
+	<context:component-scan base-package="com"></context:component-scan>
+	<!--读取信息文件  -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    	<property name="url" value="${jdbc.jdbcUrl}"></property>
+		<property name="driverClassName" value="${jdbc.driverClass}"></property>
+		<property name="username" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<!--引入ORM元数据  -->
+		<property name="mappingDirectoryLocations" value="classpath:com/povo">
+		</property></bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!--用注解配置事务  -->
+	<tx:annotation-driven/>
+	<bean id="workerDao" class="com.dao.impl.WorkerDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="userDao" class="com.dao.impl.UserDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="adminDao" class="com.dao.impl.AdminDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="repairDao" class="com.dao.impl.RepairDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="equipmentDao" class="com.dao.impl.EquipmentDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="userService" class="com.service.impl.UserServiceImpl">
+		<property name="ud" ref="userDao" />
+		<property name="rd" ref="repairDao" />
+		<property name="ed" ref="equipmentDao" />
+    </bean>
+    <bean id="workerService" class="com.service.impl.WorkerServiceImpl">
+		<property name="wd" ref="workerDao" />
+		<property name="rd" ref="repairDao" />
+		<property name="ed" ref="equipmentDao" />
+    </bean>
+    <bean id="adminService" class="com.service.impl.AdminServiceImpl">
+		<property name="ad" ref="adminDao" />
+		<property name="ud" ref="userDao" />
+		<property name="wd" ref="workerDao" />
+		<property name="rd" ref="repairDao" />
+		<property name="ed" ref="equipmentDao" />
+    </bean>
+    <bean id="adminUser" class="com.action.adminUser">
+    	<property name="as" ref="adminService" />
+    </bean>
+    <bean id="adminWorker" class="com.action.adminWorker">
+    	<property name="as" ref="adminService" />
+    </bean>
+    <bean id="Jump" class="com.action.Jump">
+    	<property name="as" ref="adminService" />
+    	<property name="us" ref="userService" />
+    	<property name="ws" ref="workerService" />
+    </bean>
+    <bean id="login" class="com.action.login">
+    	<property name="as" ref="adminService" />
+    	<property name="us" ref="userService" />
+    	<property name="ws" ref="workerService" />
+    </bean>
+    <bean id="repairAction" class="com.action.repairAction">
+    	<property name="us" ref="userService" />
+    	<property name="ws" ref="workerService" />
+    	<property name="as" ref="adminService" />
+    </bean>
+    <bean id="userAction" class="com.action.userAction">
+    	<property name="us" ref="userService" />
+    </bean>
+    <bean id="workerAction" class="com.action.workerAction">
+    	<property name="ws" ref="workerService" />
+    </bean></beans>

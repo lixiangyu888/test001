@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<constant name="struts.custom.i18n.resources" value="i18n.dr"/>
+<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<package name="User" namespace="/" extends="struts-default">
+		<action name="login" class="com.action.login" method="login">
+			<result name="user">/User/userMain.jsp</result>
+			<result name="worker">/Worker/workerMain.jsp</result>
+			<result name="admin">/Admin/adminMain.jsp</result>
+			<result name="fail">/login.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="register" class="userAction" method="register">
+			<result name="success">/login.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="tokenSession"></interceptor-ref>
+			<result name="input">/User/register.jsp</result>
+			<result name="fail">/login.jsp</result>
+		</action>
+		<action name="userUpdate" class="userAction" method="userUpdate">
+			<result name="success">/User/userMain.jsp</result>
+			<result name="input">/User/userUpdate.jsp</result>
+			<result name="fail">/User/userUpdate.jsp</result>
+		</action>
+		<action name="repairScore" class="repairAction" method="repairScore">
+			<result name="success">/Repair/searchUserRepair.jsp</result>
+			<result name="input">/Repair/scoreRepair.jsp</result>
+		</action>
+		<action name="addRepair" class="repairAction" method="addRepair">
+			<result name="success">/Repair/searchUserRepair.jsp</result>
+			<result name="input">/Repair/addRepair.jsp</result>
+			<result name="fail">/Repair/searchUserRepair.jsp</result>
+		</action>
+	</package>
+	<package name="Admin" namespace="/" extends="struts-default">
+		<action name="adminUpdateUser" class="com.action.adminUser" method="adminUpdateUser">
+			<result name="success">/Admin/userInformation.jsp</result>
+			<result name="input">/User/adminUpdateUser.jsp</result>
+			<result name="fail">/User/adminUpdateUser.jsp</result>
+		</action>
+		<action name="adminUpdateWorker" class="adminWorker" method="adminUpdateWorker">
+			<result name="success">/Admin/workerInformation.jsp</result>
+			<result name="input">/Worker/adminUpdateWorker.jsp</result>
+			<result name="fail">/Worker/adminUpdateWorker.jsp</result>
+		</action>
+		<action name="addUser" class="adminUser" method="adminAddUser">
+			<result name="success">/Admin/userInformation.jsp</result>
+			<result name="input">/User/adminAddUser.jsp</result>
+			<result name="fail">/Admin/userInformation.jsp</result>
+		</action>
+		<action name="addWorker" class="adminWorker" method="adminAddWorker">
+			<result name="success">/Admin/workerInformation.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="tokenSession"></interceptor-ref>
+			<result name="input">/Worker/adminAddWorker.jsp</result>
+			<result name="fail">/Admin/workerInformation.jsp</result>
+		</action>
+		<action name="deleteUser" class="Jump" method="adminDeleteUser">
+			<result name="success">/Admin/userInformation.jsp</result>
+			<result name="fail">/Admin/userInformation.jsp</result>
+		</action>
+		<action name="deleteWorker" class="Jump" method="adminDeleteWorker">
+			<result name="success">/Admin/workerInformation.jsp</result>
+			<result name="fail">/Admin/workerInformation.jsp</result>
+		</action>
+		<action name="searchWorkerRepairJsp" class="com.action.repairAction" method="searchWorkerRepairJsp">
+			<result name="success">/Repair/searchWorkerRepair.jsp</result>
+			<result name="input">/Repair/searchWorkerRepair.jsp</result>
+		</action>
+		<action name="searchEquipmentRepairJsp" class="com.action.repairAction" method="searchEquipmentRepairJsp">
+			<result name="success">/Repair/searchEquipmentRepair.jsp</result>
+			<result name="input">/Repair/searchEquipmentRepair.jsp</result>
+		</action>
+	</package>
+	<package name="Worker" namespace="/" extends="struts-default">
+		<action name="workerUpdate" class="com.action.workerAction" method="workerUpdate">
+			<result name="success">/Worker/workerMain.jsp</result>
+			<result name="input">/Worker/workerUpdate.jsp</result>
+			<result name="fail">/Worker/workerMain.jsp</result>
+		</action>
+		<action name="updateRepairStart" class="repairAction" method="repairStart">
+			<result name="success">/Repair/workerScopeRepair.jsp</result>
+		</action>
+		<action name="updateRepairWait" class="repairAction" method="repairWait">
+			<result name="success">/Repair/workerScopeRepair.jsp</result>
+		</action>
+		<action name="updateRepairEnd" class="repairAction" method="repairEnd">
+			<result name="success">/Repair/workerScopeRepair.jsp</result>
+		</action>
+	</package>
+	<package name="Jump" namespace="/" extends="struts-default">
+		<action name="regJsp" class="Jump" method="regJsp">
+			<result name="success">/User/register.jsp</result>
+		</action>
+		<action name="reLogin" class="Jump" method="reLogin">
+			<result name="success">/login.jsp</result>
+		</action>
+		<action name="userUpdateJsp" class="Jump" method="userUpdateJsp">
+			<result name="success">/User/userUpdate.jsp</result>
+		</action>
+		<action name="searchUserRepairJsp" class="Jump" method="searchUserRepairJsp">
+			<result name="success">/Repair/searchUserRepair.jsp</result>
+		</action>
+		<action name="addRepairJsp" class="Jump" method="addRepairJsp">
+			<result name="success">/Repair/addRepair.jsp</result>
+		</action>
+		<action name="userInformationJsp" class="Jump" method="userInformationJsp">
+			<result name="success">/Admin/userInformation.jsp</result>
+		</action>
+		<action name="workerInformationJsp" class="Jump" method="workerInformationJsp">
+			<result name="success">/Admin/workerInformation.jsp</result>
+		</action>
+		<action name="repairMainJsp" class="Jump" method="repairMainJsp">
+			<result name="success">/Repair/repairMain.jsp</result>
+		</action>
+		<action name="workerUpdateJsp" class="Jump" method="workerUpdateJsp">
+			<result name="success">/Worker/workerUpdate.jsp</result>
+		</action>
+		<action name="workerScopeRepairJsp" class="Jump" method="workerScopeRepairJsp">
+			<result name="success">/Repair/workerScopeRepair.jsp</result>
+		</action>
+		<action name="adminUpdateUserJsp" class="Jump" method="adminUpdateUserJsp">
+			<result name="success">/User/adminUpdateUser.jsp</result>
+		</action>
+		<action name="adminUpdateWorkerJsp" class="Jump" method="adminUpdateWorkerJsp">
+			<result name="success">/Worker/adminUpdateWorker.jsp</result>
+		</action>
+		<action name="adminAddUserJsp" class="Jump" method="adminAddUserJsp">
+			<result name="success">/User/adminAddUser.jsp</result>
+		</action>
+		<action name="adminAddWorkerJsp" class="Jump" method="adminAddWorkerJsp">
+			<result name="success">/Worker/adminAddWorker.jsp</result>
+		</action>
+		<action name="scoreRepairJsp" class="Jump" method="scoreRepairJsp">
+			<result name="success">/Repair/scoreRepair.jsp</result>
+		</action>
+	</package>
+</struts>    
