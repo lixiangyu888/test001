@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.povo.RepairEntity" table="repair" schema="dormitory">
+        <id name="repairid" column="repairid"/>
+        <property name="eid" column="eid"/>
+        <property name="scope" column="scope"/>
+        <property name="uid" column="uid"/>
+        <property name="userDate" column="userDate"/>
+        <property name="state" column="state"/>
+        <property name="wid" column="wid"/>
+        <property name="workeDate" column="workeDate"/>
+        <property name="score" column="score"/>
+        <many-to-one name="equipmentByEid" class="com.povo.EquipmentEntity" insert="false" update="false">
+            <column name="eid"/>
+        </many-to-one>
+        <many-to-one name="userByUid" class="com.povo.UserEntity" insert="false" update="false">
+            <column name="uid"/>
+        </many-to-one>
+        <many-to-one name="workerByWid" class="com.povo.WorkerEntity" insert="false" update="false">
+            <column name="wid" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>
